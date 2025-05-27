@@ -1,0 +1,90 @@
+EXERCISE 21
+
+SELECT
+    ->     u.full_name,
+    ->     COUNT(f.feedback_id) AS feedback_count
+    -> FROM
+    ->     Feedback f
+    -> JOIN
+    ->     Users u ON f.user_id = u.user_id
+    -> GROUP BY
+    ->     u.user_id
+    -> ORDER BY
+    ->     feedback_count DESC
+    -> LIMIT 5;
++-------------+----------------+
+| full_name   | feedback_count |
++-------------+----------------+
+| Bob Smith   |              1 |
+| Charlie Lee |              1 |
+| Diana King  |              1 |
++-------------+----------------+
+3 rows in set (0.00 sec)
+
+EXERCISE 22
+
+SELECT
+    ->     user_id,
+    ->     event_id,
+    ->     COUNT(*) AS duplicate_count
+    -> FROM
+    ->     Registrations
+    -> GROUP BY
+    ->     user_id, event_id
+    -> HAVING
+    ->     COUNT(*) > 1;
+Empty set (0.00 sec)
+
+EXERCISE 23
+
+ SELECT
+    ->     DATE_FORMAT(registration_date, '%Y-%m') AS month,
+    ->     COUNT(*) AS registrations
+    -> FROM
+    ->     Registrations
+    -> WHERE
+    ->     registration_date >= CURDATE() - INTERVAL 12 MONTH
+    -> GROUP BY
+    ->     DATE_FORMAT(registration_date, '%Y-%m')
+    -> ORDER BY
+    ->     month;
++---------+---------------+
+| month   | registrations |
++---------+---------------+
+| 2025-04 |             2 |
+| 2025-05 |             2 |
+| 2025-06 |             1 |
++---------+---------------+
+3 rows in set (0.00 sec)
+
+EXERCISE 24 
+
+ SELECT
+    ->     e.title,
+    ->     AVG(TIMESTAMPDIFF(MINUTE, s.start_time, s.end_time)) AS avg_duration_minutes
+    -> FROM
+    ->     Events e
+    -> JOIN
+    ->     Sessions s ON e.event_id = s.event_id
+    -> GROUP BY
+    ->     e.event_id;
++-------------------------------+----------------------+
+| title                         | avg_duration_minutes |
++-------------------------------+----------------------+
+| Tech Innovators Meetup        |              67.5000 |
+| AI & ML Conference            |              90.0000 |
+| Frontend Development Bootcamp |             120.0000 |
++-------------------------------+----------------------+
+3 rows in set (0.00 sec)
+
+EXERCISE 25
+
+ SELECT
+    ->     e.title
+    -> FROM
+    ->     Events e
+    -> LEFT JOIN
+    ->     Sessions s ON e.event_id = s.event_id
+    -> WHERE
+    ->     s.session_id IS NULL;
+Empty set (0.00 sec)
