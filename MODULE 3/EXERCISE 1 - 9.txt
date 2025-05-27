@@ -1,0 +1,130 @@
+import java.util.Scanner;
+
+public class Exercises1to9 {
+
+    public static void main(String[] args) {
+        // You can uncomment one exercise at a time to test it
+
+        // exercise1();
+        // exercise2();
+        // exercise3();
+        // exercise4();
+        // exercise5();
+        // exercise6();
+        // exercise7();
+        // exercise8();
+        // exercise9();
+    }
+
+    // 1. Hello World Program
+    static void exercise1() {
+        System.out.println("Hello, World!");
+    }
+
+    // 2. Simple Calculator
+    static void exercise2() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter first number: ");
+        double num1 = sc.nextDouble();
+        System.out.print("Enter second number: ");
+        double num2 = sc.nextDouble();
+        System.out.print("Choose operation (+, -, *, /): ");
+        char op = sc.next().charAt(0);
+        double result;
+        switch (op) {
+            case '+': result = num1 + num2; break;
+            case '-': result = num1 - num2; break;
+            case '*': result = num1 * num2; break;
+            case '/':
+                if (num2 != 0) result = num1 / num2;
+                else {
+                    System.out.println("Cannot divide by zero.");
+                    return;
+                }
+                break;
+            default:
+                System.out.println("Invalid operation.");
+                return;
+        }
+        System.out.println("Result: " + result);
+    }
+
+    // 3. Even or Odd Checker
+    static void exercise3() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter an integer: ");
+        int num = sc.nextInt();
+        if (num % 2 == 0)
+            System.out.println(num + " is even.");
+        else
+            System.out.println(num + " is odd.");
+    }
+
+    // 4. Leap Year Checker
+    static void exercise4() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter a year: ");
+        int year = sc.nextInt();
+        boolean isLeap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+        if (isLeap)
+            System.out.println(year + " is a leap year.");
+        else
+            System.out.println(year + " is not a leap year.");
+    }
+
+    // 5. Multiplication Table
+    static void exercise5() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int num = sc.nextInt();
+        for (int i = 1; i <= 10; i++) {
+            System.out.println(num + " x " + i + " = " + (num * i));
+        }
+    }
+
+    // 6. Data Type Demonstration
+    static void exercise6() {
+        int i = 10;
+        float f = 10.5f;
+        double d = 20.99;
+        char c = 'A';
+        boolean b = true;
+
+        System.out.println("int: " + i);
+        System.out.println("float: " + f);
+        System.out.println("double: " + d);
+        System.out.println("char: " + c);
+        System.out.println("boolean: " + b);
+    }
+
+    // 7. Type Casting Example
+    static void exercise7() {
+        double d = 9.78;
+        int i = (int) d;
+        System.out.println("Double to int: " + i);
+
+        int x = 5;
+        double y = (double) x;
+        System.out.println("Int to double: " + y);
+    }
+
+    // 8. Operator Precedence
+    static void exercise8() {
+        int result = 10 + 5 * 2; // Multiplication before addition
+        System.out.println("Result of 10 + 5 * 2 = " + result);
+        // Explanation: 5*2=10 then 10+10=20
+    }
+
+    // 9. Grade Calculator
+    static void exercise9() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter marks out of 100: ");
+        int marks = sc.nextInt();
+
+        if (marks >= 90) System.out.println("Grade: A");
+        else if (marks >= 80) System.out.println("Grade: B");
+        else if (marks >= 70) System.out.println("Grade: C");
+        else if (marks >= 60) System.out.println("Grade: D");
+        else System.out.println("Grade: F");
+    }
+}
