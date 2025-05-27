@@ -1,0 +1,213 @@
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.nio.file.*;
+import java.sql.*;
+
+public class Exercises21to31 {
+
+    public static void main(String[] args) throws Exception {
+        // Uncomment the exercise you want to run:
+
+        // exercise21();
+        // exercise22();
+        // exercise23();
+        // exercise24();
+        // exercise25();
+        // exercise26();
+        // exercise27();
+        // exercise28();
+        // exercise29();
+        // exercise30();
+        // exercise31();
+    }
+
+    // 21. Custom Exception
+    static void exercise21() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter your age: ");
+        int age = sc.nextInt();
+        try {
+            if (age < 18) throw new InvalidAgeException("Age must be at least 18");
+            System.out.println("Valid age: " + age);
+        } catch (InvalidAgeException e) {
+            System.out.println("Exception caught: " + e.getMessage());
+        }
+    }
+
+    static class InvalidAgeException extends Exception {
+        public InvalidAgeException(String msg) {
+            super(msg);
+        }
+    }
+
+    // 22. File Writing
+    static void exercise22() throws IOException {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter text to write to file: ");
+        String text = sc.nextLine();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
+            writer.write(text);
+        }
+        System.out.println("Data written to output.txt");
+    }
+
+    // 23. File Reading
+    static void exercise23() throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader("output.txt"))) {
+            String line;
+            System.out.println("Contents of output.txt:");
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        }
+    }
+
+    // 24. ArrayList Example
+    static void exercise24() {
+        Scanner sc = new Scanner(System.in);
+        ArrayList<String> names = new ArrayList<>();
+        System.out.println("Enter names (type 'stop' to end):");
+        while (true) {
+            String name = sc.nextLine();
+            if (name.equalsIgnoreCase("stop")) break;
+            names.add(name);
+        }
+        System.out.println("Names entered:");
+        for (String n : names) {
+            System.out.println(n);
+        }
+    }
+
+    // 25. HashMap Example
+    static void exercise25() {
+        Scanner sc = new Scanner(System.in);
+        HashMap<Integer, String> studentMap = new HashMap<>();
+        System.out.println("Enter student ID and name (type 0 to stop):");
+        while (true) {
+            System.out.print("ID: ");
+            int id = sc.nextInt();
+            sc.nextLine(); // consume newline
+            if (id == 0) break;
+            System.out.print("Name: ");
+            String name = sc.nextLine();
+            studentMap.put(id, name);
+        }
+        System.out.print("Enter ID to retrieve name: ");
+        int idToFind = sc.nextInt();
+        String foundName = studentMap.get(idToFind);
+        if (foundName != null) {
+            System.out.println("Name: " + foundName);
+        } else {
+            System.out.println("ID not found.");
+        }
+    }
+
+    // 26. Thread Creation
+    static void exercise26() {
+        Thread t1 = new MessageThread("Thread 1");
+        Thread t2 = new MessageThread("Thread 2");
+        t1.start();
+        t2.start();
+    }
+
+    static class MessageThread extends Thread {
+        private String message;
+
+        public MessageThread(String message) {
+            this.message = message;
+        }
+
+        public void run() {
+            for (int i = 0; i < 5; i++) {
+                System.out.println(message + " - count " + (i + 1));
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    // 27. Lambda Expressions
+    static void exercise27() {
+        List<String> fruits = new ArrayList<>(Arrays.asList("Banana", "Apple", "Orange", "Mango"));
+        fruits.sort((a, b) -> a.compareToIgnoreCase(b));
+        System.out.println("Sorted fruits: " + fruits);
+    }
+
+    // 28. Stream API
+    static void exercise28() {
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        List<Integer> evens = numbers.stream()
+                .filter(n -> n % 2 == 0)
+                .collect(Collectors.toList());
+        System.out.println("Even numbers: " + evens);
+    }
+
+    // 29. Records (Java 16+)
+    static void exercise29() {
+        List<Person> people = List.of(
+                new Person("Alice", 25),
+                new Person("Bob", 17),
+                new Person("Charlie", 30)
+        );
+        System.out.println("All people:");
+        people.forEach(System.out::println);
+        System.out.println("People aged 18 or older:");
+        people.stream()
+                .filter(p -> p.age() >= 18)
+                .forEach(System.out::println);
+    }
+
+    record Person(String name, int age) {}
+
+    // 30. Pattern Matching for switch (Java 21)
+    static void exercise30() {
+        Object[] objects = {123, "hello", 45.6, true, null};
+        for (Object obj : objects) {
+            checkType(obj);
+        }
+    }
+
+    static void checkType(Object obj) {
+        String result = switch (obj) {
+            case Integer i -> "Integer with value " + i;
+            case String s -> "String with value \"" + s + "\"";
+            case Double d -> "Double with value " + d;
+            case null -> "Null value";
+            default -> "Other type: " + obj.getClass().getSimpleName();
+        };
+        System.out.println(result);
+    }
+
+    // 31. Basic JDBC Connection (MySQL example)
+    static void exercise31() {
+        String url = "jdbc:mysql://localhost:3306/testdb"; // change db name, user, password accordingly
+        String user = "root";
+        String password = "password";
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL 8+ driver
+            Connection con = DriverManager.getConnection(url, user, password);
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM students");
+
+            System.out.println("Students:");
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                int age = rs.getInt("age");
+                System.out.println(id + " | " + name + " | " + age);
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
